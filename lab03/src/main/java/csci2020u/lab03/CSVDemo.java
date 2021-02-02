@@ -5,7 +5,7 @@ import org.apache.commons.csv.*;
 public class CSVDemo {
     public static void main(String[] args) {
         try {
-            Reader in = new FileReader("data.csv");
+            Reader in = new FileReader("./src/main/java/csci2020u/lab03/data.csv");
             Iterable<CSVRecord> records =CSVFormat.DEFAULT.withHeader("First Name", "Last Name", "SID","Grade").parse(in);
             for (CSVRecord record: records) {
                 String lastName = record.get("Last Name");
