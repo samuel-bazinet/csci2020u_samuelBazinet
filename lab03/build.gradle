@@ -1,0 +1,14 @@
+apply plugin: 'java'
+
+apply plugin: 'application'
+
+//mainClassName = 'csci2020u.lab03.SimpleTest'
+mainClassName = 'csci2020u.lab03.CSVDemo'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.commons:commons-csv:1.8'
+}
