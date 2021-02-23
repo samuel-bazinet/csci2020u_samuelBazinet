@@ -8,7 +8,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import org.apache.commons.validator.routines.*;
 
 public class Lab04 extends Application {
     @Override
@@ -17,12 +20,13 @@ public class Lab04 extends Application {
 
         GridPane grid = new GridPane();
 
-        grid.setAlignment(Pos.CENTER);
+        grid.setAlignment(Pos.TOP_LEFT);
         grid.setHgap(20);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
         
-        
+        EmailValidator validator = EmailValidator.getInstance();
+
         Button btnReg = new Button("Register");
 
         Label labUser = new Label("Username:");
@@ -31,6 +35,10 @@ public class Lab04 extends Application {
         Label labEM = new Label("E-Mail:");
         Label labPhone = new Label("Phone #:");
         Label labDOB = new Label("Date of Birth:");
+        Label labEMErr = new Label("Invalid E-mail!");
+
+        labEMErr.setVisible(false);
+        labEMErr.setTextFill(Color.RED);
 
         TextField txtUser = new TextField();
         PasswordField passPass = new PasswordField();
@@ -38,6 +46,12 @@ public class Lab04 extends Application {
         TextField txtEM = new TextField();
         TextField txtPhone = new TextField();
         DatePicker dateDOB = new DatePicker(LocalDate.now());
+
+        txtUser.setPromptText("Username");
+        passPass.setPromptText("Password");
+        txtFN.setPromptText("Full Name");
+        txtEM.setPromptText("E-Mail");
+        txtPhone.setPromptText("Phone #");
 
         grid.add(labUser, 0, 0);
         grid.add(labPass, 0, 1);
@@ -52,25 +66,33 @@ public class Lab04 extends Application {
         grid.add(txtEM, 1, 3);
         grid.add(txtPhone, 1, 4);
         grid.add(dateDOB, 1, 5);
-        
+
         grid.add(btnReg, 1, 6);
+        grid.add(labEMErr,2,3);
 
         btnReg.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
-                System.out.println("UserName: " + txtUser.getText());
-                System.out.println("PassWord: " + passPass.getText());
-                System.out.println("Full Name: " + txtFN.getText());
-                System.out.println("E-Mail: " + txtEM.getText());
-                System.out.println("Phone #: " + txtPhone.getText());
-                System.out.println("Date of Birth: " + dateDOB.getValue().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
+                if (validator.isValid(txtEM.getText())){    
+
+                    labEMErr.setVisible(false);
+
+                    System.out.println("UserName: " + txtUser.getText());
+                    System.out.println("PassWord: " + passPass.getText());
+                    System.out.println("Full Name: " + txtFN.getText());
+                    System.out.println("E-Mail: " + txtEM.getText());
+                    System.out.println("Phone #: " + txtPhone.getText());
+                    System.out.println("Date of Birth: " + dateDOB.getValue().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")));
+                } else {
+                    labEMErr.setVisible(true);
+                }
             }
         });
 
 
 
-        primaryStage.setScene(new Scene(grid, 400, 300));
+        primaryStage.setScene(new Scene(grid, 550, 300));
 
         primaryStage.show();
 

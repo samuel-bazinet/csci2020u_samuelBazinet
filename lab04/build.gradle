@@ -18,3 +18,10 @@ repositories {
     mavenCentral()
 }
 
+
+
+// https://mvnrepository.com/artifact/commons-validator/commons-validator
+dependencies {
+    implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
+}
+
