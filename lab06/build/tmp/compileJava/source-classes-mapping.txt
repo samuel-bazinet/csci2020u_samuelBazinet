@@ -1,2 +1,4 @@
 Lab06.java
  Lab06
+ Lab06$1
+ Lab06$2

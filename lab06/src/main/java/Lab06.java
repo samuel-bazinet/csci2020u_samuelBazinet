@@ -1,5 +1,5 @@
 import javafx.application.Application;
-import javafx.geometry.Insets;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -9,6 +9,8 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import java.text.DecimalFormat;
+import javafx.scene.input.MouseEvent;
+import java.lang.Math;
 
 public class Lab06 extends Application{
 
@@ -130,26 +132,66 @@ public class Lab06 extends Application{
             totalPurchases += i;
         }
 
-        double[] anglesPBAG = new double[purchasesByAgeGroup.length];
+        double[] ratiosPBAG = new double[purchasesByAgeGroup.length];
 
         for (int i = 0; i < purchasesByAgeGroup.length; i++) {
             // We calculate the angle for each group
-            anglesPBAG[i] = (double)(purchasesByAgeGroup[i])/totalPurchases * 360;
+            ratiosPBAG[i] = (double)(purchasesByAgeGroup[i])/totalPurchases;
         }
 
         double startAngle = 0.0d;
 
-        Arc[] arcs = new Arc[anglesPBAG.length];
+        Arc[] arcs = new Arc[ratiosPBAG.length];
 
-        for (int i = 0; i < anglesPBAG.length; i++) {
+        Arc[] outlines = new Arc[arcs.length];
 
-            arcs[i] = new Arc(800, 300, 200, 200, startAngle, anglesPBAG[i]);
+        for (int i = 0; i < arcs.length; i++) {
+
+            outlines[i] = new Arc(800, 200, 152, 152, startAngle, ratiosPBAG[i]*360);
+            outlines[i].setType(ArcType.ROUND);
+            startAngle += ratiosPBAG[i]*360;
+
+            pane.getChildren().add(outlines[i]);
+        }
+
+        for (int i = 0; i < ratiosPBAG.length; i++) {
+
+            arcs[i] = new Arc(800, 200, 150, 150, startAngle, ratiosPBAG[i]*360);
             arcs[i].setType(ArcType.ROUND);
-            startAngle += anglesPBAG[i];
+            startAngle += ratiosPBAG[i]*360;
             arcs[i].setFill(pieColours[i]);
+
+            Arc temp = arcs[i];
+
+            temp.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    temp.setCenterX(800+10*Math.cos((temp.getStartAngle() + temp.getLength()/2)*Math.PI/180));
+                    temp.setCenterY(200-10*Math.sin((temp.getStartAngle() + temp.getLength()/2)*Math.PI/180));
+                }
+            });
+
+            temp.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    temp.setCenterX(800);
+                    temp.setCenterY(200);
+                }
+            });
 
             pane.getChildren().add(arcs[i]);
 
+        }
+
+        Label[] labAgeGroups = new Label[ratiosPBAG.length];
+
+        for (int i = 0; i < ratiosPBAG.length; i++) {
+            labAgeGroups[i] = new Label(ageGroups[i] + ": $" + purchasesByAgeGroup[i] + " : " + df.format(ratiosPBAG[i]*100) + "%");
+            labAgeGroups[i].setTranslateX(725);
+            labAgeGroups[i].setTranslateY(370 + 25*i);
+            labAgeGroups[i].setBackground(new Background(new BackgroundFill(pieColours[i], null, null)));
+
+            pane.getChildren().add(labAgeGroups[i]);
         }
 
 
