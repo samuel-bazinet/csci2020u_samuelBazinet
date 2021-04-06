@@ -39,7 +39,7 @@ public class Lab09  extends Application{
 
     public static void main(String[] args) {  
         
-        downloadStockPrices("GOOG", "GME");
+        downloadStockPrices("GOOG", "AAPL");
 
         launch(args);
 

@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+}
+
+application {
+    mainClassName = 'FileSharerClient'
+}
+
+
+javafx {
+    version = "14"
+    modules = ['javafx.controls', 'javafx.fxml']
+
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+
+
+// https://mvnrepository.com/artifact/commons-validator/commons-validator
+dependencies {
+    implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
+}
+
